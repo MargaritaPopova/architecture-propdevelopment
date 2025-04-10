@@ -1,0 +1,61 @@
+# viewer
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: viewer
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["pods", "services", "deployments"]
+  verbs: ["get", "list", "watch"]
+
+---
+# dev-role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: dev-role
+  namespace: default
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["pods", "services", "deployments"]
+  verbs: ["get", "list", "create", "update", "delete"]
+
+---
+# ops-role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ops-role
+  namespace: default
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["pods", "services", "deployments"]
+  verbs: ["get", "list", "create", "update", "delete"]
+- apiGroups: [""]
+  resources: ["pods/log", "pods/exec"]
+  verbs: ["get"]
+
+---
+# devops-role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: devops-role
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["namespaces", "services", "deployments", "persistentvolumeclaims", "serviceaccounts"]
+  verbs: ["*"]
+
+---
+# secrets-manager
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: secrets-manager
+rules:
+- apiGroups: [""]
+  resources: ["secrets", "configmaps"]
+  verbs: ["get", "list", "create", "update", "delete"]
+
+---
+# cluster-admin — встроенная, создавать не нужно
