@@ -1,0 +1,109 @@
+---
+# Viewer role for analysts and managers (read-only access cluster-wide)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: viewer-binding
+subjects:
+- kind: User
+  name: analyst1
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: manager1
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: viewer
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Dev role for developers (full access in default namespace)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dev-binding
+  namespace: default
+subjects:
+- kind: User
+  name: dev1
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: dev2
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: dev-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Ops role for operators (full access + logs/exec in default namespace)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ops-binding
+  namespace: default
+subjects:
+- kind: User
+  name: ops1
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: ops2
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: ops-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# DevOps role (cluster-wide admin except secrets)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: devops-binding
+subjects:
+- kind: User
+  name: devops1
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: devops2
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: devops-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Secrets manager for security team (cluster-wide secrets access)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: secrets-binding
+subjects:
+- kind: User
+  name: sec1
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: sec2
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: secrets-manager
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Cluster-admin for admins (full cluster access)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-binding
+subjects:
+- kind: User
+  name: admin1
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: admin2
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin  # Встроенная роль
+  apiGroup: rbac.authorization.k8s.io
